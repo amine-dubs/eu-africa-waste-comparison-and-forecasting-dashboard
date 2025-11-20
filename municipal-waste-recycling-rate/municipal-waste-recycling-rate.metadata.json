@@ -1,0 +1,30 @@
+{
+  "chart": {
+    "title": "Municipal waste recycling rate",
+    "subtitle": "Municipal (including household) waste recycling rates, measured as the percentage of total waste generated that is recycled.",
+    "citation": "OECD/Eurostat",
+    "originalChartUrl": "https://ourworldindata.org/grapher/municipal-waste-recycling-rate?v=1&csvType=full&useColumnShortNames=false&utm_source=chatgpt.com",
+    "selection": [
+      "Portugal",
+      "Turkey",
+      "Norway",
+      "Australia",
+      "Germany"
+    ]
+  },
+  "columns": {
+    "Variable:% Recycling - MUNW": {
+      "titleShort": "Variable:% Recycling - MUNW",
+      "titleLong": "Variable:% Recycling - MUNW",
+      "unit": "Percentage",
+      "timespan": "",
+      "type": "Numeric",
+      "owidVariableId": 88394,
+      "citationShort": " – processed by Our World in Data",
+      "citationLong": " – processed by Our World in Data. “Variable:% Recycling - MUNW” [dataset]. OECD - Environment - Municipal waste, Generation and Treatment [original data].",
+      "fullMetadata": "https://api.ourworldindata.org/v1/indicators/88394.metadata.json"
+    }
+  },
+  "dateDownloaded": "2025-10-26",
+  "activeFilters": {}
+}
