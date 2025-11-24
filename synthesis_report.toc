@@ -1,0 +1,19 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Context and Environmental Issues}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Regional Challenges}{3}{subsection.1.1}%
+\contentsline {section}{\numberline {2}Dataset Description}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Data Sources}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Preprocessing Pipeline}{3}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Indicator Selection and Justification}{4}{section.3}%
+\contentsline {section}{\numberline {4}Dashboard Visualizations: Design Rationale}{4}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Why These Chart Types?}{4}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Color Psychology Strategy}{6}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Design Principles Applied}{6}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Results Interpretation}{15}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Europe: The Optimization Challenge}{15}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Africa: The Infrastructure Crisis}{15}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Key Correlations}{15}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Recommendations and Action Plans}{16}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Europe: Accelerating the Circular Economy}{16}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Africa: Building the Foundation}{16}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Using Analytics for Better Decisions}{17}{subsection.6.3}%
