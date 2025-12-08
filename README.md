@@ -2,6 +2,8 @@
 
 Interactive Streamlit dashboard for comparative analysis of waste management practices between European and African countries.
 
+**Live Dashboard:** [eu-africa-waste-comparison-and-forecasting-dashboard.streamlit.app](https://eu-africa-waste-comparison-and-forecasting-dashboard.streamlit.app/)
+
 ## 📊 Project Overview
 
 This project provides comprehensive waste management analysis across 49 countries (27 European + 22 African), focusing on:
