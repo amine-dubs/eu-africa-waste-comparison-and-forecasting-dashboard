@@ -33,23 +33,29 @@
 
 \section{Context and Environmental Issues}
 
-We're facing a growing problem: global waste is expected to jump by 70\% before 2050. That's not just an environmental concern---it affects public health and economic stability too. For this project, we analyzed \textbf{49 countries} across Europe (27) and Africa (22) over three decades (1990-2021) to understand how their waste systems compare and identify where intervention is needed most urgently.
+We're facing a growing problem: global waste is expected to jump by 70\% before 2050. That's not just an environmental concern---it affects public health and economic stability too. For this project, we analyzed \textbf{8 countries} across Europe (4) and Africa (4) over three decades (1990-2021) to understand how their waste systems compare and identify where intervention is needed most urgently.
+
+\textbf{European countries:} France, Germany, Italy, Spain (recycling data 1990-2015, waste data 2000-2021)
+
+\textbf{African countries:} Algeria, Egypt, Morocco, Tunisia (waste data 2000-2021, no recycling data)
 
 \subsection{Regional Challenges}
 
-\textbf{Europe:} The region has solid infrastructure with about 30\% recycling on average, but there are still challenges:
+\textbf{Europe:} Our 4 European countries (France, Germany, Italy, Spain) show recycling rates from 17\% to 48\% as of 2015:
 \begin{itemize}
-    \item Meeting the EU's 50\% recycling target by 2030 means closing a 20-point gap
-    \item Moving away from the old "take-make-dispose" approach to a circular economy
-    \item Big differences between Eastern Europe (<20\% recycling) and Western Europe (>50\%)
+    \item Germany leads at 47.8\% recycling (2015)
+    \item Italy follows at 29.1\%
+    \item France at 22.3\%
+    \item Spain lags at 16.8\%
+    \item Average across these 4 countries: 29\%
 \end{itemize}
 
-\textbf{Africa:} Waste is growing fast here (3-5\% per year), and the infrastructure simply can't keep up:
+\textbf{Africa:} Our 4 African countries (Algeria, Egypt, Morocco, Tunisia) represent North Africa only:
 \begin{itemize}
-    \item Only 40-60\% of urban areas have collection services, and rural coverage is below 10\%
-    \item Most waste (70-90\%) ends up in uncontrolled dumps with no environmental safeguards
-    \item The informal sector does most of the work (60-80\%), but without proper regulation or safety
-    \item Spending is just \$35 per person per year, compared to \$170 in Europe
+    \item Algeria: 254 kg/capita (2021), showing relatively stable waste generation
+    \item Egypt, Morocco, Tunisia: Waste data available but no per capita calculations due to missing population mapping
+    \item No official recycling data available for any African country in dataset
+    \item All 4 countries are North African; no Sub-Saharan representation in this dataset
 \end{itemize}
 
 \textbf{Our research objectives:} We wanted to understand exactly how these waste systems differ structurally. Can machine learning help us predict future trends for better planning? And critically, which countries need priority intervention right now?
@@ -58,11 +64,11 @@ We're facing a growing problem: global waste is expected to jump by 70\% before 
 
 \subsection{Data Sources}
 
-\textbf{1. UN Environment Waste Generation} (2000-2021): This dataset covers 132 countries and breaks down waste by sector. Households produce the most (40-50\%), followed by construction (30-35\%), manufacturing (10-15\%), and services (5-10\%). Data collection wasn't consistent though---countries like Algeria had gaps (only reporting in 2002, 2005, 2009, then continuously from 2014-2021). \url{https://ourworldindata.org/grapher/total-waste-generation}
+\textbf{1. UN Environment Waste Generation} (2000-2021): From this dataset, we extracted 8 countries with sufficient data: 4 European (France, Germany, Italy, Spain) and 4 African (Algeria, Egypt, Morocco, Tunisia). Data breaks down waste by sector where available. Algeria had gaps (only reporting in 2002, 2005, 2009, then continuously from 2014-2021). Egypt and other African countries lack complete sectoral breakdowns. \url{https://ourworldindata.org/grapher/total-waste-generation}
 
-\textbf{2. OECD Recycling Statistics} (1990-2015): 38 countries, biennial recycling rates. Europe only (Africa lacks data). \url{https://ourworldindata.org/grapher/recycling-rates-paper-and-cardboard}
+\textbf{2. OECD Recycling Statistics} (1990-2015): From this dataset, we used 4 European countries with complete time series: France, Germany, Italy, Spain. Africa completely lacks formal recycling data. \url{https://ourworldindata.org/grapher/recycling-rates-paper-and-cardboard}
 
-\textbf{3. World Bank Population} (2020 static): 49 countries for per capita normalization.
+\textbf{3. World Bank Population} (2020 static): Population data used for per capita calculations where available (primarily Algeria).
 
 \subsection{Preprocessing Pipeline}
 
@@ -70,9 +76,9 @@ We're facing a growing problem: global waste is expected to jump by 70\% before 
 
 \textbf{2. Per Capita Normalization:} To make fair comparisons, we divided total waste by population to get per-person figures. This was important because it lets us compare countries like Germany (520 kg per person) with Luxembourg (630 kg per person) meaningfully, even though Germany's total volume is roughly 100 times higher.
 
-\textbf{3. Dataset Merging:} Outer join on [country, year]. Europe 1990-2015: recycling + waste; 2016-2021: waste only. Africa 2000-2021: waste only.
+\textbf{3. Dataset Merging:} Outer join on [country, year]. Europe (4 countries) 1990-2015: recycling + waste; 2016-2021: waste only. Africa (4 countries) 2000-2021: waste only.
 
-\textbf{Data Limitations:} Working with this data had its challenges. Recycling statistics stop at 2015---that's when OECD published their last comprehensive report. Africa doesn't have any formal recycling data, which limits our analysis there. For some African countries, data was extremely sparse: Kenya had only 1 data point, Benin had 3. This meant heavy reliance on interpolation, which obviously introduces uncertainty.
+\textbf{Data Limitations:} Working with this data had its challenges. Recycling statistics stop at 2015---that's when OECD published their last comprehensive report. Africa doesn't have any formal recycling data. The dataset is limited to just 8 countries total, with no representation from Eastern Europe, Sub-Saharan Africa, or other regions. Egypt and Tunisia have very sparse data points requiring heavy interpolation.
 
 \begin{table}[h]
 \centering
@@ -81,30 +87,31 @@ We're facing a growing problem: global waste is expected to jump by 70\% before 
 \hline
 \textbf{Metric} & \textbf{Europe} & \textbf{Africa} \\
 \hline
-Countries & 27 & 22 \\
-Raw data period & Recycling: 1990-2015 & Waste: 2000-2021 \\
-& Waste: 2000-2021 & (no recycling) \\
+Countries & 4 & 4 \\
+Country names & France, Germany, & Algeria, Egypt, \\
+& Italy, Spain & Morocco, Tunisia \\
+Recycling data & 1990-2015 & None available \\
+Waste data & 2000-2021 & 2000-2021 \\
 After interpolation & 1990-2021 (annual) & 2000-2021 (annual) \\
-Avg. waste/capita & 500 kg/yr & 250 kg/yr \\
-Data completeness & 87\% → 100\% & 62\% → 100\% \\
+Data completeness & Varies by country & Sparse (Egypt, Tunisia) \\
 \hline
 \end{tabular}
-\caption{Dataset characteristics pre/post preprocessing}
+\caption{Dataset characteristics - 8 countries analyzed}
 \end{table}
 
 \section{Indicator Selection and Justification}
 
-\textbf{1. Recycling Rate (\%, Europe only):} This is the official EU metric from their Waste Framework Directive. The EU is targeting 50\% by 2030, but the current average sits at 30\%. There's a huge range---Germany is at 67\% and Austria at 58\%, while Romania struggles at just 13\% and Greece at 17\%.
+\textbf{1. Recycling Rate (\%, Europe only):} Based on OECD data ending in 2015. Our 4 European countries show a range from 16.8\% (Spain) to 47.8\% (Germany), with an average of 29\%. Germany leads significantly, followed by Italy (29.1\%), France (22.3\%), and Spain (16.8\%).
 
-\textbf{2. Waste Per Capita (kg/person/year):} We chose this normalized metric because it enables fair comparison between countries of different sizes. On average, Europeans generate about 500 kg per year, while Africans generate about 250 kg. Interestingly, this metric correlates strongly with GDP per capita (r=0.58), showing how consumption patterns drive waste.
+\textbf{2. Waste Per Capita (kg/person/year):} We calculated this metric for Algeria only (254 kg/capita in 2021) due to population data limitations. European countries (France, Germany, Italy, Spain) lack per capita calculations in the processed dataset, though their absolute waste volumes are substantial.
 
-\textbf{3. Environmental Risk Score (0-100):} We created a scoring system that considers recycling efficiency, how much waste is generated, and how fast it's growing. European countries start from a baseline of 0 (since they have recycling systems), while African countries start at 35 (no formal recycling). The color coding makes it easy to spot problems: green means low risk (<30), yellow is moderate (30-60), and red means urgent intervention needed (>60).
+\textbf{3. Environmental Risk Score (0-100):} We created a scoring system that considers recycling efficiency, waste generation levels, and growth rates. European countries (France, Germany, Italy, Spain) benefit from recycling data, while African countries (Algeria, Egypt, Morocco, Tunisia) are penalized for lack of formal recycling systems. The color coding makes it easy to spot problems: green means low risk (<30), yellow is moderate (30-60), and red means urgent intervention needed (>60).
 
-\textbf{4. ARIMA Forecasts (2022-2026):} This is a machine learning model that learns from actual waste patterns to predict the next 5 years. When we had enough data, ARIMA worked great (23 out of 27 European countries, 18 out of 22 African countries---shown with green badges). When data was too sparse, we fell back to simpler linear predictions (orange badges). On the charts, you'll see dotted lines extending the solid historical data into the future.
+\textbf{4. ARIMA Forecasts (2022-2026):} This is a machine learning model that learns from actual waste patterns to predict the next 5 years. With our limited dataset of 8 countries, ARIMA performance varies---countries with complete time series (like France and Germany) produce reliable forecasts (green badges), while countries with sparse data (like Egypt and Tunisia) fall back to simpler linear predictions (orange badges). On the charts, you'll see dotted lines extending the solid historical data into the future.
 
 \section{Dashboard Visualizations: Design Rationale}
 
-We designed an interactive dashboard with 12 different visualizations spread across 6 pages. Each chart type was chosen deliberately for specific analytical purposes, following established best practices in data visualization. Here's our reasoning:
+We designed an interactive dashboard with multiple visualizations across several pages. Each chart type was chosen deliberately for specific analytical purposes, following established best practices in data visualization. Here's our reasoning:
 
 \subsection{Why These Chart Types?}
 
@@ -118,7 +125,7 @@ We designed an interactive dashboard with 12 different visualizations spread acr
 
 \textbf{2. Horizontal Bar Charts (Rankings):}
 \begin{itemize}
-    \item \textbf{Purpose:} Enable direct country-to-country comparison
+    \item \textbf{Purpose:} Enable direct country-to-country comparison among the 4 European countries
     \item \textbf{Why this works:} Country names are much easier to read when placed on the Y-axis rather than rotated at awkward angles below bars
     \item \textbf{Sorted by value:} We always sort descending---top performers at the top, bottom performers at the bottom. This makes the ranking obvious
     \item \textbf{Color gradient:} Colors intensify with values (e.g., darker red = higher risk level)
@@ -142,18 +149,18 @@ We designed an interactive dashboard with 12 different visualizations spread acr
 
 \textbf{5. Scatter Plots (Performance Analysis):}
 \begin{itemize}
-    \item \textbf{Purpose:} Explore 2-variable relationships (recycling vs waste)
-    \item \textbf{Quadrants:} Dashed lines divide into 4 categories (champions/laggards)
+    \item \textbf{Purpose:} Explore 2-variable relationships (recycling vs waste) for the 4 European countries with both metrics
+    \item \textbf{Quadrants:} Dashed lines divide into categories
     \item \textbf{Size encoding:} Bubble size = total waste volume (3rd dimension)
-    \item \textbf{Color by category:} Green (best), Yellow (mixed), Red (worst)
+    \item \textbf{Color by category:} Visual grouping of similar performers
 \end{itemize}
 
 \textbf{6. Heatmaps (Correlation Matrix):}
 \begin{itemize}
-    \item \textbf{Purpose:} Identify countries with similar recycling patterns
+    \item \textbf{Purpose:} Identify countries with similar recycling patterns (4 European countries)
     \item \textbf{Why this works:} Grid format shows all pairwise relationships
     \item \textbf{Diverging scale:} Blue=positive correlation (similar trends), Red=negative (opposite)
-    \item \textbf{Practical use:} Find best-practice sharing opportunities
+    \item \textbf{Practical use:} With only 4 countries, patterns are limited but can identify best-practice sharing opportunities
 \end{itemize}
 
 \textbf{7. KPI Cards with Gradients:}
@@ -191,7 +198,7 @@ We designed an interactive dashboard with 12 different visualizations spread acr
 
 \textbf{3. Progressive Disclosure:} Simple overview page → detailed analytics. Hover tooltips show extra data on demand.
 
-\textbf{4. Responsive Sizing:} Chart height = $\max(400px, n_{countries} \times 30px)$ ensures readability even with 49 countries.
+\textbf{4. Responsive Sizing:} Chart height = $\max(400px, n_{countries} \times 30px)$ ensures readability even with 8 countries (though this is less critical with smaller datasets).
 
 \textbf{5. Storytelling Flow:} Page order guides users: Overview → Geographic → Analytics → Predictions → Risks (general to specific).
 
@@ -204,19 +211,19 @@ We designed an interactive dashboard with 12 different visualizations spread acr
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.90\textwidth]{screenshots/02_overview_comparison.png}
-\caption{Overview Comparison: Side-by-side metrics highlight the Europe-Africa divide. Bar charts compare absolute volumes (Europe: 225M tonnes/year, Africa: 180M tonnes/year) and per capita rates (2:1 ratio). Note Africa's steeper growth trajectory.}
+\caption{Overview Comparison: Side-by-side metrics highlight differences between 4 European countries (France, Germany, Italy, Spain) and 4 African countries (Algeria, Egypt, Morocco, Tunisia). Bar charts compare absolute volumes and rates where per capita data is available (limited to Algeria for Africa).}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.90\textwidth]{screenshots/03_geographic_europe.png}
-\caption{Geographic Analysis - Europe: Choropleth map uses diverging color scale (ColorBrewer RdYlGn) to visualize recycling rates. Germany (67\%) and Austria (58\%) lead, while Eastern Europe lags (Romania 13\%, Bulgaria 20\%). Interactive tooltips provide country-specific data.}
+\caption{Geographic Analysis - Europe: Choropleth map uses diverging color scale (ColorBrewer RdYlGn) to visualize recycling rates across 4 countries. Germany (47.8\%) leads, while Spain lags (16.8\%). France (22.3\%) and Italy (29.1\%) fall in the middle range. Interactive tooltips provide country-specific data.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.90\textwidth]{screenshots/04_geographic_africa.png}
-\caption{Geographic Analysis - Africa: Map displays waste generation intensity (kg/capita). North Africa (Egypt 400 kg/cap, Tunisia 350 kg/cap) shows European-like patterns due to urbanization, while Sub-Saharan countries remain below 200 kg/cap. Missing data (gray) highlights reporting gaps.}
+\caption{Geographic Analysis - Africa: Map displays waste generation for 4 North African countries (Algeria, Egypt, Morocco, Tunisia). Algeria shows 254 kg/capita (2021). Other countries lack complete per capita calculations. This map only covers North Africa, with no Sub-Saharan representation.}
 \end{figure}
 
 \begin{figure}[H]
@@ -228,50 +235,50 @@ We designed an interactive dashboard with 12 different visualizations spread acr
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.90\textwidth]{screenshots/08_predictions_europe.png}
-\caption{Predictions - Europe: ARIMA forecasts (2022-2026) shown as dotted lines extending historical data. Model usage indicators: Green badges show 23/27 countries successfully used ARIMA, 4 fell back to Linear Regression. Confidence intervals (shaded area) widen for longer horizons.}
+\caption{Predictions - Europe: ARIMA forecasts (2022-2026) shown as dotted lines extending historical data. Model usage indicators show which countries successfully used ARIMA (green badges) vs. linear regression fallback (orange badges). Confidence intervals (shaded area) widen for longer horizons.}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.90\textwidth]{screenshots/09_predictions_africa.png}
-\caption{Predictions - Africa: Forecasts reveal concerning trends—Nigeria, Egypt, and South Africa projected to exceed 400 kg/capita by 2026 (60\% growth from 2021). ARIMA convergence lower (18/22 countries) due to shorter historical data (2000-2021 vs. 1990-2021 for Europe).}
+\caption{Predictions - Africa: Forecasts for 4 North African countries (Algeria, Egypt, Morocco, Tunisia). Algeria has the most reliable forecast due to more complete data. Egypt and Tunisia forecasts rely more heavily on interpolation and linear methods due to sparse historical data (2000-2021).}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.90\textwidth]{screenshots/11_risk_assessment_comparison.png}
-\caption{Risk Assessment Comparison: Horizontal bar chart ranks countries by risk score. Europe clusters at 30-45 (moderate), Africa spans 45-75 (moderate to high). Color coding (green/yellow/red) enables quick identification of priority intervention zones. Nigeria (72) and Kenya (68) flagged as critical.}
+\caption{Risk Assessment Comparison: Horizontal bar chart ranks countries by risk score. With only 8 countries total (4 Europe, 4 Africa), the comparison is limited but demonstrates the methodology. European countries benefit from recycling data (lower risk scores), while African countries are penalized for lack of formal recycling systems (higher risk scores). Color coding (green/yellow/red) enables quick identification of relative risk levels.}
 \end{figure}
 
 \section{Results Interpretation}
 
 \subsection{Europe: The Optimization Challenge}
 
-\textbf{Current state (2021):} Europe achieves 30.2\% recycling on average, with significant variation (13-67\% range). Waste generation is relatively stable at 502 kg per capita per year. The overall risk score sits at 38.5 out of 100, which we categorize as moderate.
+\textbf{Current state (2015 recycling data):} Our 4 European countries achieve 29\% recycling on average, with variation from 16.8\% to 47.8\%. 
 
-\textbf{Leading countries:} Germany tops the list at 67\%, followed by Austria (58\%), Belgium (54\%), and the Netherlands (52\%). These countries implemented comprehensive systems early---deposit-return schemes, pay-as-you-throw pricing, and Extended Producer Responsibility policies have been in place since 1991.
+\textbf{Leading country:} Germany tops the list at 47.8\% (2015), showing steady improvement from 23.3\% in 1993. Germany's comprehensive recycling system with deposit-return schemes and Extended Producer Responsibility has been refined over decades.
 
-\textbf{Countries falling behind:} Romania sits at just 13\%, Greece at 17\%, and Bulgaria at 20\%. These countries still rely heavily on landfills (83\% of waste in some cases) and lack adequate recycling infrastructure.
+\textbf{Countries falling behind:} Spain lags at 16.8\% (2015), and France at 22.3\%, both below the group average. Italy performs reasonably well at 29.1\%.
 
-\textbf{Future projections (2022-2026):} Our ARIMA models show interesting divergence. Western European waste is actually declining slightly (about -0.2\% per year---dematerialization strategies are working). Eastern Europe is growing at 2.1\% annually as consumption patterns catch up to Western levels. If policies continue as-is, 17 countries should reach 40\% recycling by 2026. The model worked successfully for 23 out of 27 countries.
+\textbf{Future projections (2022-2026):} Our ARIMA models forecast waste trends for the 4 European countries where sufficient historical data exists. Germany, France, and Italy have stable time series allowing reliable projections. Spain's forecasts are less certain due to data gaps. Note that recycling data only extends to 2015, so post-2015 recycling projections are unavailable.
 
 \subsection{Africa: The Infrastructure Crisis}
 
-\textbf{The current situation (2021):} There's no official recycling data (informal recycling is probably around 5-10\%), waste generation is 248 kg per person per year, the risk score is high at 58.7 out of 100, and waste is growing at 3.8\% per year---faster than population growth (2.6\% per year).
+\textbf{The current situation (2021):} Our 4 North African countries (Algeria, Egypt, Morocco, Tunisia) have no official recycling data. Algeria shows 254 kg per capita waste generation (2021). The other three countries lack complete per capita calculations.
 
-\textbf{Critical hotspots (risk > 65):} Nigeria scores 72 out of 100 (Lagos alone produces 10,000 tonnes per day!). Kenya is at 68 (Nairobi only has 60\% collection coverage). Egypt sits at 64 (in Cairo, the informal Zabbaleen community collects 80\% of waste).
+\textbf{Data limitations:} Egypt has extremely sparse data with large gaps requiring interpolation. Morocco and Tunisia similarly have incomplete time series. Algeria has the most complete dataset among African countries, with continuous reporting from 2014-2021.
 
-\textbf{What's coming (2022-2026):} The forecasts are concerning. Africa's total waste could jump 22\% by 2026 (from 180M to 220M tonnes per year). Nigeria alone could hit 40M tonnes per year (+25\%), which would exceed several EU countries. Without investment, countries like Kenya, Ghana, and Tanzania could see their risk scores double. ARIMA worked for 18 out of 22 countries.
+\textbf{What's coming (2022-2026):} ARIMA forecasts are challenging with sparse African data. Algeria's more complete dataset allows for projections, while Egypt, Morocco, and Tunisia require linear fallback methods due to insufficient historical data points.
 
-\textbf{Why it's so hard:} Only 40-60\% of urban areas have collection, rural coverage is under 10\%, most waste goes to open dumps (70-90\%), spending is just \$35 per person per year versus \$170 in Europe, and the informal sector handles 60-80\% of all waste.
+\textbf{Important note:} Our dataset contains NO Sub-Saharan African countries. All 4 African countries are North African, limiting generalizability to the broader African continent.
 
 \subsection{Key Correlations}
 
-\textbf{Strong positive relationships (r>0.60):} When population grows, waste grows too (correlation of 0.72). Similarly, countries with higher GDP per capita produce more waste per person (correlation of 0.58).
+\textbf{Observed relationships:} With only 8 countries, statistical correlations have limited reliability. However, we observe that Germany (highest recycling at 47.8\%) demonstrates that advanced waste management is achievable, while Spain (lowest at 16.8\%) shows room for improvement.
 
-\textbf{Inverse relationships (r<-0.50):} Here's the good news: recycling really does reduce risk. For every 10\% increase in recycling, the risk score drops by 6.5 points (correlation of -0.65).
+\textbf{Germany's example:} Germany's waste data shows relatively stable generation levels from 2004-2020 (ranging 310-338 million tonnes), suggesting that mature economies can maintain waste levels while continuing economic activity.
 
-\textbf{The bright side:} Economic growth doesn't have to mean more waste. Germany proves this---they grew their GDP by 15\% between 2010 and 2021 while actually reducing waste by 8\%. Decoupling is possible!
+\textbf{Algeria's trend:} Algeria shows increasing waste from 5.2M tonnes (2002) to 12.6M tonnes (2019), followed by a decline to 11.0M tonnes (2021), possibly reflecting economic changes or reporting methodology shifts.
 
 \section{Recommendations and Action Plans}
 
@@ -279,53 +286,56 @@ We designed an interactive dashboard with 12 different visualizations spread acr
 
 \textbf{What needs to happen soon (2025-2027):}
 \begin{enumerate}
-    \item Put \texteuro 2.5 billion of EU Structural Funds toward recycling infrastructure in Romania, Greece, and Bulgaria
-    \item Make Extended Producer Responsibility mandatory for packaging in all 27 countries (only 19 have it now)
-    \item Get everyone using the same metrics---right now there are 7 different ways countries calculate recycling rates
-    \item Set up separate organic waste collection and aim for 50\% capture by 2027 (we're at 32\% now)
+    \item Spain and France need to close the gap with Germany's 47.8\% recycling rate
+    \item Extend recycling data collection beyond 2015 to track post-2015 progress
+    \item Improve data completeness across all 8 countries to enable better forecasting
+    \item Standardize waste reporting methodology to reduce interpolation dependency
 \end{enumerate}
 
 \textbf{Looking further ahead (2028-2035):}
 \begin{enumerate}
-    \item Move toward zero waste to landfill for recyclables (following Denmark and Netherlands)
-    \item Use AI for sorting---computer vision could cut contamination from 15\% down to 3\%
-    \item Create regional industrial networks where one company's waste becomes another's resource (like Kalundborg's model, which saves 30\% of resources)
+    \item Expand dataset to include more European countries for comprehensive EU analysis
+    \item Include Sub-Saharan African countries to enable continent-wide African analysis
+    \item Collect recycling data for North African countries (Algeria, Egypt, Morocco, Tunisia)
+    \item Extend temporal coverage beyond 2021 for waste data and beyond 2015 for recycling data
 \end{enumerate}
 
 \subsection{Africa: Building the Foundation}
 
 \textbf{Urgent priorities (2025-2028):}
 \begin{enumerate}
-    \item \textbf{Get collection working:} Reach 80\% urban coverage (currently 40-60\%) using public-private partnerships like Senegal's model, community programs like Rwanda's Umuganda, and mobile payment systems like Kenya's M-Pesa
-    \item \textbf{Replace open dumps:} Build proper controlled landfills in Lagos, Nairobi, and Cairo with liners, leachate treatment, and methane capture. Each site costs about \$50-80M but lasts 10 years
-    \item \textbf{Support informal workers:} Bring the 60-80\% of workers in the informal sector into cooperatives (like Egypt's Zabbaleen with 40,000 workers getting 80\% recovery rates), provide health insurance and training
-    \item \textbf{Fix the data problem:} Set up national waste statistics offices with GIS mapping and annual surveys (needed for SDG 12.5 tracking)
+    \item \textbf{Fix the data problem:} Algeria, Egypt, Morocco, and Tunisia need continuous annual reporting with standardized methodology. Current gaps make trend analysis unreliable
+    \item \textbf{Establish recycling measurement:} All 4 North African countries lack recycling data. Implementing baseline measurement systems is essential for progress tracking
+    \item \textbf{Expand geographic coverage:} Include Sub-Saharan countries in future data collection to enable continent-wide African waste management analysis
+    \item \textbf{Population mapping:} Complete per capita calculations for Egypt, Morocco, and Tunisia by ensuring population data linkage
 \end{enumerate}
 
 \textbf{Long-term strategy (2029-2035):}
 \begin{enumerate}
-    \item Build regional hubs: E-waste processing in Ghana's Accra (serving 12 countries), composting networks in Kenya-Tanzania-Uganda, industrial waste centers in Morocco-Tunisia
-    \item Foster Europe-Africa partnerships: City-to-city mentoring programs (German cities sharing expertise), grants for refurbished sorting equipment, knowledge exchanges
-    \item Launch circular economy pilots: Turn plastic into road material (Kenya's already doing this---1 km of road uses 500,000 bags), convert organic waste to biogas (Rwanda has 20 digesters serving 5,000 households), recycle construction materials (South Africa recovers 60\%)
+    \item Build on Germany's success: Study and replicate Germany's recycling system improvements (23.3\% in 1993 to 47.8\% in 2015) in Spain and France
+    \item Foster Europe-North Africa partnerships: Germany, France, and Italy could share technical expertise with Algeria, Egypt, Morocco, and Tunisia
+    \item Establish baseline metrics: Before launching initiatives, ensure all 4 North African countries have reliable annual waste reporting and initial recycling measurement systems
 \end{enumerate}
 
 \subsection{Using Analytics for Better Decisions}
 
-\textbf{How ARIMA helps:} Plan infrastructure with built-in capacity buffers (10-15\% extra for 2030 growth), budget more accurately (Nigeria needs roughly \$2.3B by 2030), get early warnings about saturation (like Kenya's Dandora dump in 2018).
+\textbf{How ARIMA helps:} For countries with complete data (like Germany and Algeria), ARIMA provides 5-year forecasts to plan infrastructure capacity. For countries with sparse data (Egypt, Tunisia), the linear fallback at least indicates general trends.
 
-\textbf{How risk scoring helps:} The World Bank and African Development Bank can prioritize loans for countries scoring above 60, UNEP can target high-risk countries for capacity building, and annual recalculation shows whether interventions are working.
+\textbf{How risk scoring helps:} The scoring system highlights which countries need priority attention, though with only 8 countries the comparative analysis is limited.
 
-\textbf{The dashboard as a practical tool:} Run "what-if" scenarios (if we increase recycling by 10\%, risk drops 6.5 points), benchmark against similar countries (same GDP and population), open it up for civil society monitoring, and update it quarterly with live data instead of static reports.
+\textbf{The dashboard as a practical tool:} Demonstrates waste management visualization and forecasting methodology that could be applied to expanded datasets with more countries and complete time series data.
 
 \section*{Conclusion}
 
-Our analysis shows a clear divide between the two regions. Europe has the infrastructure but needs stronger policies to meet circular economy targets. The positive trend is that 17 out of 27 countries should hit 40\% recycling by 2026 if current policies continue. Africa's situation is more challenging---waste is growing at 3.8\% annually while collection barely reaches 40-60\% in cities and under 10\% in rural areas.
+Our analysis of 8 countries (4 European, 4 North African) reveals significant data limitations that constrain comprehensive waste management conclusions. 
 
-\textbf{Main takeaways:} Europe's recycling gap (67\% in Germany versus 13\% in Romania) is about policy implementation, not technology. Africa needs \$50-80 billion by 2030 to prevent a major crisis. Formalizing the informal waste sector could recover 60-80\% of waste efficiently. Our ARIMA models predict a 22\% increase in African waste by 2026.
+\textbf{Main takeaways:} Germany leads European recycling at 47.8\% (2015), while Spain lags at 16.8\%. This 31-point gap demonstrates variability even among Western European countries. North African countries (Algeria, Egypt, Morocco, Tunisia) completely lack formal recycling measurement, preventing comparative analysis. Algeria provides the most complete waste time series among African countries (254 kg/capita in 2021).
 
-\textbf{What this means going forward:} With proper investment (€2.5B), Europe could reach 50\% recycling by 2030. In Africa, targeted investments might reduce uncontrolled dumping by 20-30\% by 2030. Wider adoption of this dashboard could improve data coverage from 62\% to 85\% by 2027, supporting SDG 12.5 monitoring efforts.
+\textbf{Data quality issues:} The dataset's limitation to just 8 countries prevents continent-wide or EU-wide generalizations. Recycling data ends in 2015, providing no insight into 2016-2024 progress. African data is sparse, requiring heavy interpolation that introduces uncertainty.
 
-The dashboard we built provides a working framework that brings together machine learning forecasts (ARIMA), rule-based risk assessment, and intuitive visualizations. It's designed to support evidence-based infrastructure planning and track progress over time.
+\textbf{What this means going forward:} This dashboard demonstrates visualization and forecasting methodology that could be valuable if applied to expanded datasets. Future work should prioritize: (1) expanding to 20+ European countries for EU-representative analysis, (2) including Sub-Saharan Africa for continental coverage, (3) collecting post-2015 recycling data, and (4) establishing baseline recycling measurement in North Africa.
+
+The dashboard we built provides a working framework that brings together machine learning forecasts (ARIMA), rule-based risk assessment, and intuitive visualizations. However, its analytical conclusions are limited by the small 8-country sample.
 
 \section*{References}
 
