@@ -428,19 +428,11 @@ elif "Europe" in region and "Comparison" not in region:
     available_years = sorted(df_waste["year"].dropna().unique())
     default_year_range = (2010, int(max(available_years)))
 else:
-    # North-South Comparison - use overlapping years where both datasets have data
-    # Recycling data: 1990-2015, Waste data: 2000-2021, so overlap is 2000-2015
-    waste_years = set(df_waste["year"].dropna().unique())
-    recycling_years = set(df_recycling["year"].dropna().unique())
-    overlapping_years = sorted(waste_years.intersection(recycling_years))
-    
-    if overlapping_years:
-        available_years = overlapping_years
-        default_year_range = (2010, max(overlapping_years))
-    else:
-        # Fallback to waste years if no overlap (shouldn't happen)
-        available_years = sorted(df_waste["year"].dropna().unique())
-        default_year_range = (2010, int(max(available_years)))
+    # North-South Comparison - use full waste data years (2000-2021)
+    # Note: Recycling data only goes to 2015, but waste data (which is what we forecast) extends to 2020+
+    # For waste forecasting, we need the full waste data range, not just recycling overlap
+    available_years = sorted(df_waste["year"].dropna().unique())
+    default_year_range = (2010, int(max(available_years)))
 
 year_range = st.sidebar.select_slider(
     "Year range",
