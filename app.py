@@ -423,9 +423,10 @@ if "Africa" in region and "Comparison" not in region:
     available_years = sorted(df_waste["year"].dropna().unique())
     default_year_range = (2010, int(max(available_years)))
 elif "Europe" in region and "Comparison" not in region:
-    # Europe only - use recycling data years (1990-2015)
-    available_years = sorted(df_recycling["year"].dropna().unique())
-    default_year_range = (2010, 2015)
+    # Europe only - use waste data years (2000-2021) for full data range
+    # Note: Recycling data only goes to 2015, but waste data extends to 2020+
+    available_years = sorted(df_waste["year"].dropna().unique())
+    default_year_range = (2010, int(max(available_years)))
 else:
     # North-South Comparison - use overlapping years where both datasets have data
     # Recycling data: 1990-2015, Waste data: 2000-2021, so overlap is 2000-2015
