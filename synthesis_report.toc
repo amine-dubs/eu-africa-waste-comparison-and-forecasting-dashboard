@@ -16,4 +16,4 @@
 \contentsline {section}{\numberline {6}Recommendations and Action Plans}{16}{section.6}%
 \contentsline {subsection}{\numberline {6.1}Europe: Accelerating the Circular Economy}{16}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}Africa: Building the Foundation}{17}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}Using Analytics for Better Decisions}{17}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.3}Using Analytics for Better Decisions}{18}{subsection.6.3}%

@@ -721,12 +721,12 @@ if page == "Overview & KPIs":
                                                    var_name="sector", value_name="tonnes")
                     sector_long["sector"] = sector_long["sector"].map(lambda x: sector_rename.get(x, x.replace("_tonnes", "").title()))
                     
-                    # Semantic colors for sectors (reds/oranges for waste)
+                    # Distinct colors for sectors - using color wheel for maximum contrast
                     sector_colors = {
-                        "Households": "#FF6B6B",      # Light red
-                        "Construction": "#FFA500",    # Orange
-                        "Manufacturing": "#FF8C42",   # Burnt orange
-                        "Services": "#FFD93D"         # Yellow-orange
+                        "Households": "#E74C3C",      # Bold red (largest sector, primary waste source)
+                        "Construction": "#F39C12",    # Bright orange (second largest, distinct from red)
+                        "Manufacturing": "#3498DB",   # Blue (industrial, cool tone contrasts with warm)
+                        "Services": "#9B59B6"         # Purple (tertiary sector, distinct from all)
                     }
                     
                     fig_sector = px.area(
@@ -1748,12 +1748,12 @@ elif page == "Waste Production":
                                        var_name="sector", value_name="tonnes")
         sector_long["sector"] = sector_long["sector"].map(lambda x: sector_rename.get(x, x.replace("_tonnes", "").title()))
         
-        # Semantic colors for sectors
+        # Distinct colors for sectors - using color wheel for maximum contrast
         sector_colors = {
-            "Households": "#FF6B6B",      # Light red
-            "Construction": "#FFA500",    # Orange
-            "Manufacturing": "#FF8C42",   # Burnt orange
-            "Services": "#FFD93D"         # Yellow-orange
+            "Households": "#E74C3C",      # Bold red (largest sector, primary waste source)
+            "Construction": "#F39C12",    # Bright orange (second largest, distinct from red)
+            "Manufacturing": "#3498DB",   # Blue (industrial, cool tone contrasts with warm)
+            "Services": "#9B59B6"         # Purple (tertiary sector, distinct from all)
         }
         
         fig_sector = px.area(
